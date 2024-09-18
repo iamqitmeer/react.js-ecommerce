@@ -10,6 +10,7 @@ import ProductDetail from "./screens/Products/ProductDetail";
 import Login from "./screens/Login/Login";
 import Register from "./screens/Register/Register";
 import EditProfile from "./screens/EditProfile/EditProfile";
+import NotFoundPage from "./screens/NotFoundPage/NotFoundPage";
 
 function App() {
   const [count, setCount] = useState(0);
@@ -18,6 +19,7 @@ function App() {
     {
       path: "/",
       element: <AppLayout />,
+      errorElement: <NotFoundPage />,
       children: [
         {
           path: "/",
