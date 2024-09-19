@@ -14,14 +14,11 @@ function IsUserDataAvailableProvider({ children }) {
     // Function to fetch user data from Firestore
     const fetchUserData = async (uid) => {
       try {
-        console.log("Fetching user data for UID:", uid); // Log UID
         const userDocRef = doc(db, "users", uid);
         const userDoc = await getDoc(userDocRef);
         if (userDoc.exists()) {
-          console.log("User data fetched:", userDoc.data()); // Log fetched data
           setUserData(userDoc.data());
         } else {
-          console.log("No such document!");
         }
       } catch (error) {
         console.error("Error fetching user data:", error);

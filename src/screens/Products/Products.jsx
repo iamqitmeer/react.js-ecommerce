@@ -11,8 +11,17 @@ function Products() {
     axios
       .get("https://dummyjson.com/products")
       .then((response) => {
-        console.log(response.data.products);
-        setProducts(response.data.products);
+        // Fetching data from the API
+        const fetchedProducts = response.data.products;
+
+        // Adding isFavourite property to each product
+        const updatedProducts = fetchedProducts.map(product => ({
+          ...product, // existing properties
+          isFavourite: false // default value for the new property
+        }));
+
+        // Setting the state with updated products
+        setProducts(updatedProducts);
         setLoading(false); // Set loading to false once data is fetched
       })
       .catch((err) => {

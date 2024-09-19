@@ -1,5 +1,5 @@
 import React, { useContext, useState } from "react";
-import { NavLink, useNavigate } from "react-router-dom";
+import { NavLink, Link, useNavigate } from "react-router-dom";
 import {
   Navbar,
   NavbarBrand,
@@ -8,7 +8,7 @@ import {
   NavbarMenuToggle,
   NavbarMenu,
   NavbarMenuItem,
-  Link,
+  Link as RouterLink,
   Button,
   Avatar,
   Badge,
@@ -24,6 +24,7 @@ import { IsUserAvailable } from "../context/IsUserHe";
 import { auth } from "../utils/firebase";
 import { signOut } from "firebase/auth";
 import { IsUserDataAvailable } from "../context/UserDetails";
+import { CartContext } from "../context/CartContext";
 
 export default function Header() {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
@@ -48,12 +49,9 @@ export default function Header() {
   };
 
   const { isUser, setIsUser } = useContext(IsUserAvailable);
-  console.log("user -->", isUser);
   const { userData, loading } = useContext(IsUserDataAvailable);
 
   if (loading) return <p>Loading...</p>;
-
-  console.log("Navbar userData:", userData);
 
   function handleSignOutBtn() {
     signOut(auth)
@@ -64,6 +62,8 @@ export default function Header() {
         // An error happened.
       });
   }
+
+  let { cart, setCart } = useContext(CartContext);
 
   return (
     <Navbar onMenuOpenChange={setIsMenuOpen}>
@@ -99,17 +99,19 @@ export default function Header() {
         </NavbarItem>
       </NavbarContent>
       <NavbarContent justify="end">
-        {isUser ? (
-          <Badge content="99+" shape="circle" color="danger">
-            <Button
-              radius="full"
-              isIconOnly
-              aria-label="more than 99 notifications"
-              variant="light"
-            >
-              <i class="ri-shopping-cart-fill text-xl"></i>{" "}
-            </Button>
-          </Badge>
+        {User ? (
+          <NavLink to="/cart">
+            <Badge content={cart.length} shape="circle" color="danger">
+              <Button
+                radius="full"
+                isIconOnly
+                variant="light"
+                
+              >
+                <i className="ri-shopping-cart-fill text-xl"></i>
+              </Button>
+            </Badge>
+          </NavLink>
         ) : (
           <NavLink to={`/login`}>
             <NavbarItem className="hidden lg:flex">

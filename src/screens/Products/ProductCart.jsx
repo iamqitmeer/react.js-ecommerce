@@ -1,11 +1,45 @@
 import { Button } from "@nextui-org/react";
 import axios from "axios";
-import React, { useEffect } from "react";
+import React, { useContext, useEffect } from "react";
 import { NavLink } from "react-router-dom";
+import { CartContext } from "../../context/CartContext";
+import { FavouriteContext } from "../../context/FavouriteContext";
 
 function ProductCart({ product }) {
   const { description, title, category, thumbnail, price, id } = product;
 
+  let { cart, setCart } = useContext(CartContext);
+  let { favourite, setFavourite } = useContext(FavouriteContext);
+
+  function handleAddToCartBtn() {
+    let newArr = [...cart];
+    let found = false;
+
+    newArr.forEach((every) => {
+      if (every.id === product.id) {
+        alert("Already Added In Cart");
+        found = true;
+      }
+    });
+
+    if (!found) {
+      newArr.push(product);
+      setCart(newArr);
+    }
+  }
+
+  const handleFavouriteBtn = (product) => {
+    const isProductInFavourites = favourite.some(item => item.id === product.id);
+
+    if (isProductInFavourites) {
+      const updatedFavourites = favourite.filter(item => item.id !== product.id);
+      setFavourite(updatedFavourites);
+    } else {
+      setFavourite([...favourite, { ...product, isFavourite: true }]);
+    }
+  };
+
+  console.log(cart);
   return (
     <div className="rounded-lg shadow border border-gray-200 p-6 shadow-sm dark:border-gray-700 dark:bg-gray-800">
       <NavLink to={`/product/${id}`}>
@@ -57,18 +91,18 @@ function ProductCart({ product }) {
               <div className="tooltip-arrow" data-popper-arrow=""></div>
             </div>
 
-            <Button isIconOnly color="primary" aria-label="Like">
-              <i class="ri-heart-line"></i>{" "}
-            </Button>
-            <div
-              id="tooltip-add-to-favorites"
-              role="tooltip"
-              className="tooltip invisible absolute z-10 inline-block rounded-lg bg-gray-900 px-3 py-2 text-sm font-medium text-white opacity-0 shadow-sm transition-opacity duration-300 dark:bg-gray-700"
-              data-popper-placement="top"
+            <Button
+              onClick={()=>handleFavouriteBtn(product)}
+              isIconOnly
+              color="primary"
+              aria-label="Like"
             >
-              Add to favorites
-              <div className="tooltip-arrow" data-popper-arrow=""></div>
-            </div>
+              {favourite.isFavourite ? (
+                <i class="ri-heart-fill"></i>
+              ) : (
+                <i class="ri-heart-line"></i>
+              )}
+            </Button>
           </div>
         </div>
 
@@ -188,7 +222,7 @@ function ProductCart({ product }) {
             ${price}
           </p>
 
-          <Button color="primary" variant="solid">
+          <Button onClick={handleAddToCartBtn} color="primary" variant="solid">
             Add to cart
           </Button>
         </div>

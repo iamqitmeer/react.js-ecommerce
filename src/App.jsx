@@ -11,6 +11,7 @@ import Login from "./screens/Login/Login";
 import Register from "./screens/Register/Register";
 import EditProfile from "./screens/EditProfile/EditProfile";
 import NotFoundPage from "./screens/NotFoundPage/NotFoundPage";
+import CartPage from "./screens/Cart/CartPage";
 
 function App() {
   const [count, setCount] = useState(0);
@@ -19,7 +20,7 @@ function App() {
     {
       path: "/",
       element: <AppLayout />,
-      errorElement: <NotFoundPage />,
+      // errorElement: <NotFoundPage />,
       children: [
         {
           path: "/",
@@ -28,6 +29,10 @@ function App() {
         {
           path: "/about",
           element: <About />,
+        },
+        {
+          path: "/cart",
+          element: <CartPage />,
         },
         {
           path: "/contact",
