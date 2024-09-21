@@ -39,7 +39,6 @@ function ProductCart({ product }) {
     }
   };
 
-  console.log(cart);
   return (
     <div className="rounded-lg shadow border border-gray-200 p-6 shadow-sm dark:border-gray-700 dark:bg-gray-800">
       <NavLink to={`/product/${id}`}>
